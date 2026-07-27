@@ -7,18 +7,25 @@
 
 // Constructor for 1.3" SH1106 I2C OLED
 // Use U8G2_SH1106_128X64_NONAME_F_HW_I2C for 1.3" displays
+// Створення об'єкта OLED-дисплея
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 
+// Сканування пристроїв на шині I²C
 void scanI2CDevices()
 {
-  uint8_t found = 0;
+
+  uint8_t found = 0; // Лічильник знайдених пристроїв
   Serial.println("I2C scan start...");
 
+  // Перебір усіх адрес I²C
   for (uint8_t addr = 1; addr < 127; addr++)
   {
+    // Відправка запиту за адресою
     Wire.beginTransmission(addr);
+    // Перевірка відповіді
     if (Wire.endTransmission() == 0)
     {
+      // Виведення знайденої адреси
       Serial.print("Found I2C device at 0x");
       if (addr < 16)
       {
@@ -40,18 +47,20 @@ void setup(void)
   Serial.begin(115200);
   delay(300);
 
+  // Ініціалізує апаратний інтерфейс I²C
   Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);
-  scanI2CDevices();
-  u8g2.begin();
+  scanI2CDevices(); // Сканування шини I²C
+  u8g2.begin();     // Ініціалізація OLED-дисплея
 }
 
 void loop(void)
 {
-  u8g2.clearBuffer();                  // clear the internal memory
-  u8g2.setFont(u8g2_font_ncenB08_tr);  // choose a suitable font
-  u8g2.drawStr(0, 10, "Hello ESP32!"); // write something to the internal memory
-  u8g2.drawStr(0, 50, "1.3 inch OLED");
-  u8g2.sendBuffer(); // transfer internal memory to the display
+  // Виведення тексту на OLED-дисплей через бібліотеку U8g2
+  u8g2.clearBuffer();                   // Очищення буфера дисплея
+  u8g2.setFont(u8g2_font_ncenB08_tr);   // Встановлює шрифт 8 пікселів
+  u8g2.drawStr(0, 10, "Hello ESP32!");  // Виведення тексту x=0, y=10
+  u8g2.drawStr(0, 50, "1.3 inch OLED"); // Виведення тексту x=0, y=50
+  u8g2.sendBuffer();                    // Передача даних на дисплей
   delay(1000);
 }
 
@@ -139,6 +148,8 @@ void loop(void)
 //   u8g2.sendBuffer();
 //   delay(1000);
 // }
+
+//-----------------------------------------------------------
 
 // #include <Arduino.h>
 // #include <U8g2lib.h>
