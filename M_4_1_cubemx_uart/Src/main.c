@@ -22,7 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
-
+#include "app.h"
+// #include "led_drv.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,12 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define MESSAGE_SIZE 48
-#define LED_GPIO_PIN GPIO_PIN_13
-#define LED_GPIO_PORT GPIOC
-#define UART_TIMEOUT_MS 100   // Таймаут для UART в мілісекундах
-#define UART_BUFFER_SIZE 1    // Розмір буфера для прийому даних з UART
-#define LED_BLINK_DELAY_MS 10 // Затримка для блимання світлодіода в мілісекундах
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,7 +45,7 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+uart_context uart2_ctx;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,7 +78,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  app_init(&uart2_ctx, &huart2);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -96,8 +92,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t msg[MESSAGE_SIZE] = {0};
-  uint8_t rxData[UART_BUFFER_SIZE];
 
   /* USER CODE END 2 */
 
@@ -105,17 +99,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // Неблокуючий прийом із таймаутом 0 (проверка без очікування)
-    if (HAL_UART_Receive(&huart2, rxData, UART_BUFFER_SIZE, 0) == HAL_OK)
-    {
-      // Отримали 1 байт
-      // sprintf((char *)msg, "Received from UART2: 0x%x\r\n", rxData[0]);
-      // CDC_Transmit_FS(msg, strlen((char *)msg));
-      // Відправляємо отриманий байт назад на UART
-      HAL_UART_Transmit(&huart2, (uint8_t *)rxData, UART_BUFFER_SIZE, UART_TIMEOUT_MS);
-      // Блимання світлодіода для візуального підтвердження отримання даних
-      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-    }
+    app_run(&uart2_ctx);
 
     /* USER CODE END WHILE */
 

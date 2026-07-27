@@ -96,7 +96,7 @@ extern "C" void app_main(void)
         if (cmd != EOF)
         {
             uint8_t tx_data = (uint8_t)cmd;
-            ESP_LOGI(TAG, "Received from Serial Monitor: 0x%02X", tx_data);
+            ESP_LOGI(TAG, "Received Serial Monitor: 0x%02X", tx_data);
 
             // Передача команди в UART1
             err = uart_send(&uart1_ctx, &tx_data, 1);
