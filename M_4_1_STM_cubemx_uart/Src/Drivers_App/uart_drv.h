@@ -12,17 +12,20 @@ typedef struct
 
 } uart_context;
 
-// Инициализация контекста UART
+// Ініціалізація контексту UART
 HAL_StatusTypeDef uart_init(uart_context *ctx,
 							UART_HandleTypeDef *huart);
 
-// Передача данных
+// Передача даних через UART
 HAL_StatusTypeDef uart_send(uart_context *ctx,
 							uint8_t *data,
 							uint16_t length);
 
-// Прием данных
+// Приймання даних через UART
 HAL_StatusTypeDef uart_receive(uart_context *ctx,
 							   uint8_t *data,
 							   uint16_t length,
 							   uint32_t timeout);
+
+// Деініціалізація UART
+HAL_StatusTypeDef uart_deinit(uart_context *ctx);

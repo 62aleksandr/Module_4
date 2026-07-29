@@ -50,3 +50,21 @@ HAL_StatusTypeDef uart_receive(uart_context *ctx,
 							length,
 							timeout);
 }
+
+HAL_StatusTypeDef uart_deinit(uart_context *ctx)
+{
+	if (ctx == NULL ||
+		ctx->initialized == 0)
+	{
+		return HAL_ERROR;
+	}
+
+	HAL_StatusTypeDef status = HAL_UART_DeInit(ctx->huart);
+
+	if (status == HAL_OK)
+	{
+		ctx->initialized = 0;
+	}
+
+	return status;
+}

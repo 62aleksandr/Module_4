@@ -21,8 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <string.h>
-#include "app.h"
+
 // #include "led_drv.h"
 /* USER CODE END Includes */
 
@@ -45,7 +44,7 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uart_context uart2_ctx;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,6 +58,10 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+// UART_HandleTypeDef *uart_get_handle()
+// {
+//   return &huart2;
+// }
 /* USER CODE END 0 */
 
 /**
@@ -78,7 +81,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  app_init(&uart2_ctx, &huart2);
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -97,10 +100,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    app_run(&uart2_ctx);
+  main_app();
 
+  while (1)
+
+  {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

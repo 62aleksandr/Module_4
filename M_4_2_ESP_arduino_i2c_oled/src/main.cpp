@@ -8,7 +8,7 @@
 // Constructor for 1.3" SH1106 I2C OLED
 // Use U8G2_SH1106_128X64_NONAME_F_HW_I2C for 1.3" displays
 // Створення об'єкта OLED-дисплея
-U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
 // Сканування пристроїв на шині I²C
 void scanI2CDevices()
