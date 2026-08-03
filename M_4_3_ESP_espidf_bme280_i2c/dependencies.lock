@@ -1,0 +1,21 @@
+dependencies:
+  espressif/cmake_utilities:
+    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 0.5.3
+  i2c_bus:
+    component_hash: null
+    source:
+      path: D:\EMB_11\Module_4\M_4_3_ESP_espidf_bme280_i2c\components\i2c_bus
+      type: local
+    version: 1.5.2
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.2.1
+manifest_hash: 4c9c2eaa91c48bdd3a726676a396fef9541b838b0e1431eb6cfdb211d4f1350d
+target: esp32s3
+version: 1.0.0

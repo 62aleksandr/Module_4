@@ -1,0 +1,21 @@
+dependencies:
+  esp-idf-lib/esp_idf_lib_helpers:
+    component_hash: 689853bb8993434f9556af0f2816e808bf77b5d22100144b21f3519993daf237
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.4.0
+  esp-idf-lib/i2cdev:
+    component_hash: ad8981cc64533dcaced5107d72e42bcebe79345e194e82795792af531b300ce3
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 2.1.2
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.2.1
+manifest_hash: 80334a71a22ee5fa760bcb8cbd6db8d5f7fa8118dffbdf6ceab04abbaa3f8e7a
+target: esp32s3
+version: 1.0.0

@@ -17,7 +17,7 @@ static constexpr int UART1_TX_BUFFER_SIZE = 256;
 
 static constexpr gpio_num_t LED_GPIO = GPIO_NUM_15;
 
-static const char *TAG = "UART";
+static const char *TAG = "MAIN";
 
 extern "C" void app_main(void)
 {
@@ -37,7 +37,11 @@ extern "C" void app_main(void)
     uart1_ctx.tx_buffer_size = UART1_TX_BUFFER_SIZE;
     uart1_ctx.initialized = false;
 
-    ESP_ERROR_CHECK(uart_init(&uart1_ctx));
+    esp_err_t err = uart_init(&uart1_ctx);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "uart_init: %s", esp_err_to_name(err));
+    }
 
     //-------------Ініціалізація GPIO LED-------------
     gpio_config_t led_conf = {};
@@ -47,10 +51,14 @@ extern "C" void app_main(void)
     led_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
     led_conf.intr_type = GPIO_INTR_DISABLE;
 
-    ESP_ERROR_CHECK(gpio_config(&led_conf));
+    err = gpio_config(&led_conf);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "gpio_config: %s", esp_err_to_name(err));
+    }
 
     static bool led_state = false; // Змінна стану
-    esp_err_t err = ESP_OK;
+    err = ESP_OK;
 
     while (1)
     {
@@ -102,7 +110,7 @@ extern "C" void app_main(void)
             err = uart_send(&uart1_ctx, &tx_data, 1);
             if (err != ESP_OK)
             {
-                ESP_LOGE(TAG, " uart_send: %s", esp_err_to_name(err));
+                ESP_LOGE(TAG, "uart_send: %s", esp_err_to_name(err));
             }
         }
 

@@ -3,7 +3,7 @@
 #include "usbd_cdc_if.h"
 #include "main.h"
 
-extern UART_HandleTypeDef huart2;
+// extern UART_HandleTypeDef huart2;
 
 int _write(int file, char *ptr, int len)
 {
