@@ -121,6 +121,34 @@ esp_err_t i2c_read(i2c_master_dev_handle_t dev_handle,
 	return ESP_OK;
 }
 
+//------------- Читання даних з регістру через I2C ---------------
+esp_err_t i2c_read_register(i2c_master_dev_handle_t dev_handle,
+							uint8_t reg_addr,
+							uint8_t *data,
+							size_t length)
+{
+	// Перевірка коректності аргументів
+	if (dev_handle == NULL || data == NULL || length == 0)
+	{
+		return ESP_ERR_INVALID_ARG;
+	}
+
+	// Передача адреси регістру та читання даних
+	esp_err_t err = i2c_master_transmit_receive(dev_handle,
+												&reg_addr,
+												sizeof(reg_addr),
+												data,
+												length,
+												-1);
+
+	if (err != ESP_OK)
+	{
+		return err;
+	}
+
+	return ESP_OK;
+}
+
 // Сканування I2C шини ---------------
 //------------- Сканування I2C шини ---------------
 esp_err_t i2c_scan(i2c_mst_ctx_t *ctx,
