@@ -17,11 +17,13 @@ static const char *TAG = "DMA_M2M_FLAG";
 // Структура для передачі даних у Callback
 typedef struct
 {
-	volatile bool is_done;		  // Атомарний прапорець
+	volatile bool is_done;		  // Прапорець закінчення  DMA  callback DMA
 	volatile int64_t finish_time; // Час завершення
 } dma_result_t;
 
-// Callback: виконується в контексті переривання (ISR)
+// Callback-функція DMA.
+// Викликається автоматично після завершення копіювання DMA
+// у контексті переривання (ISR).
 static bool IRAM_ATTR dma_copy_done_cb(async_memcpy_t mcp_hdl,
 									   async_memcpy_event_t *event,
 									   void *cb_args)
@@ -38,14 +40,21 @@ extern "C" void app_main()
 	Led led(LED_OUT);
 	esp_err_t ret = ESP_OK;
 
+	// Створення та налаштування конфігурації DMA для асинхронного копіювання пам'яті
 	async_memcpy_config_t config = {};
+	// Кількість запитів на копіювання, які можуть очікувати у черзі DMA
 	config.backlog = 8;
+	// Додаткові прапорці режиму роботи DMA (
 	config.flags = 0;
+	// Дескриптор (handle) драйвера DMA memcpy
 	async_memcpy_handle_t driver = NULL;
+	// виділення апаратного ресурсу DMA та створення handle управління ним
 	ret = esp_async_memcpy_install(&config, &driver);
 	ESP_ERROR_CHECK(ret);
 
-	// Підготовка пам'яті
+	// Виділення буферів у DMA-сумісній пам'яті
+	// src — буфер джерела даних
+	// dst — буфер призначення даних
 	uint8_t *src = (uint8_t *)heap_caps_malloc(DATA_SIZE, MALLOC_CAP_DMA);
 	uint8_t *dst = (uint8_t *)heap_caps_malloc(DATA_SIZE, MALLOC_CAP_DMA);
 	if (!src || !dst)
@@ -59,6 +68,7 @@ extern "C" void app_main()
 
 	while (1)
 	{
+		// Ініціалізація структури
 		dma_result_t dma_res = {.is_done = false, .finish_time = 0};
 
 		ESP_LOGI(TAG, "--- Starting Test ---");
